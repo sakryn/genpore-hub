@@ -1,0 +1,380 @@
+/* ============================================================================
+   GenPore Training Portal — global styles
+
+   All colors come from CSS variables set by ThemeProvider, which reads
+   lib/branding.js. To rebrand, edit branding.js — never edit color values here.
+
+   Every var() carries a fallback, so if ThemeProvider fails to run the app
+   still renders in brand colors rather than unstyled. When checking for
+   leftover brand colors, grep for BOTH hex and rgb triplets — a color written
+   rgba(0, 121, 192, .1) will not show up in a search for #0079C0.
+
+   NOTE: app/admin/page.jsx does NOT use this file. It is styled with inline
+   styles only. Editing this stylesheet has no effect on the admin dashboard.
+   ============================================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-primary, #101820);
+}
+
+body {
+  background: var(--app-bg, #EEF2F6);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; border: none; }
+button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* ============================================================================
+   SHARED
+   ============================================================================ */
+.shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--background, #FFFFFF);
+  padding: 40px 24px 64px;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.brand-logo { height: 48px; width: auto; display: block; }
+
+.btn-primary {
+  background: var(--primary-color, #0079C0);
+  color: var(--primary-color-text, #FFFFFF);
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: background 0.15s ease;
+}
+.btn-primary:hover:not(:disabled) { background: var(--primary-color-hover, #005E96); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary, #5A6672);
+  border: 1px solid var(--border, #DDE4EA);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.btn-ghost:hover { border-color: var(--primary-color, #0079C0); color: var(--primary-color, #0079C0); }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: var(--text-secondary, #5A6672);
+  font-size: 16px;
+}
+
+/* ============================================================================
+   LOGIN + LANGUAGE PICKER
+   ============================================================================ */
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--background, #FFFFFF);
+  border: 1px solid var(--border, #DDE4EA);
+  border-radius: 16px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(16, 24, 32, 0.06);
+}
+
+.auth-logo { height: 52px; width: auto; margin: 0 auto 24px; display: block; }
+
+.auth-card h1 {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+  color: var(--text-primary, #101820);
+}
+.auth-card p.sub {
+  color: var(--text-secondary, #5A6672);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border, #DDE4EA);
+  font-size: 16px; /* 16px avoids iOS zoom-on-focus */
+  margin-bottom: 14px;
+  text-align: center;
+  letter-spacing: 0.08em;
+  color: var(--text-primary, #101820);
+  background: var(--background, #FFFFFF);
+}
+.auth-input:focus {
+  outline: none;
+  border-color: var(--primary-color, #0079C0);
+  box-shadow: 0 0 0 3px rgba(0, 121, 192, 0.16);
+}
+
+.auth-error {
+  color: #C0392B;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  min-height: 1.2em;
+}
+
+.auth-card .btn-primary { width: 100%; }
+
+/* Bilingual login: both languages shown at once, so nobody has to guess in a
+   language they do not read. */
+.bilingual-pair { display: grid; gap: 2px; }
+.bilingual-pair .primary-lang { font-size: 1.4rem; font-weight: 700; }
+.bilingual-pair .second-lang {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-secondary, #5A6672);
+}
+
+/* Language choice buttons */
+.lang-options { display: grid; gap: 12px; margin-bottom: 8px; }
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 10px;
+  border: 2px solid var(--border, #DDE4EA);
+  background: var(--background, #FFFFFF);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary, #101820);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.lang-option:hover { border-color: var(--primary-color, #0079C0); }
+.lang-option[data-selected='true'] {
+  border-color: var(--primary-color, #0079C0);
+  background: rgba(0, 121, 192, 0.06);
+}
+
+/* ============================================================================
+   LEARNER DASHBOARD
+   ============================================================================ */
+.dash-head { margin-bottom: 8px; }
+.dash-head h1 { font-size: 1.9rem; color: var(--text-primary, #101820); }
+.dash-head p { color: var(--text-secondary, #5A6672); margin-top: 4px; }
+
+.dash-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progress-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 28px;
+}
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: var(--surface, #F4F7FA);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border, #DDE4EA);
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary-color, #0079C0);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+.progress-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary, #5A6672);
+  white-space: nowrap;
+}
+
+/* Uniform card grid. All thumbnails are 16:9 and identically framed, so the
+   grid reads as one set rather than five unrelated things. */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.video-card {
+  border: 1px solid var(--border, #DDE4EA);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--background, #FFFFFF);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.video-card:hover {
+  box-shadow: 0 8px 24px rgba(16, 24, 32, 0.1);
+  transform: translateY(-2px);
+}
+
+.video-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--surface, #F4F7FA);
+  overflow: hidden;
+}
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--success, #1E8E4E);
+  color: #FFFFFF;
+}
+
+.video-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(16, 24, 32, 0.78);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-body { padding: 16px; display: flex; flex-direction: column; flex: 1; gap: 6px; }
+.video-body h2 { font-size: 1.05rem; color: var(--text-primary, #101820); line-height: 1.35; }
+.video-body p { font-size: 0.9rem; color: var(--text-secondary, #5A6672); line-height: 1.45; flex: 1; }
+
+.video-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+.video-status { font-size: 0.8rem; font-weight: 700; color: var(--muted, #8A96A3); }
+.video-status[data-done='true'] { color: var(--success, #1E8E4E); }
+
+.video-cta {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--primary-color, #0079C0);
+}
+
+/* ============================================================================
+   PLAYER
+   ============================================================================ */
+.player-head { margin-bottom: 18px; }
+.player-head h1 { font-size: 1.5rem; margin: 10px 0 4px; }
+.player-head p { color: var(--text-secondary, #5A6672); }
+
+.player-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  display: block;
+}
+
+.player-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.player-hint { font-size: 0.88rem; color: var(--text-secondary, #5A6672); }
+
+.complete-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  color: var(--success, #1E8E4E);
+  font-size: 0.98rem;
+}
+
+/* ============================================================================
+   LANGUAGE TOGGLE (top right)
+   ============================================================================ */
+.lang-toggle { display: inline-flex; border: 1px solid var(--border, #DDE4EA); border-radius: 8px; overflow: hidden; }
+.lang-toggle button {
+  padding: 7px 14px;
+  background: transparent;
+  color: var(--text-secondary, #5A6672);
+  font-size: 13px;
+  font-weight: 700;
+}
+.lang-toggle button[data-active='true'] {
+  background: var(--primary-color, #0079C0);
+  color: var(--primary-color-text, #FFFFFF);
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+.portal-footer {
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border, #DDE4EA);
+  text-align: center;
+  color: var(--text-secondary, #5A6672);
+  font-size: 0.82rem;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+@media (max-width: 640px) {
+  .shell { padding: 24px 16px 48px; }
+  .video-grid { grid-template-columns: 1fr; }
+  .dash-head h1 { font-size: 1.5rem; }
+  .brand-header { gap: 12px; }
+}
