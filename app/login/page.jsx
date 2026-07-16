@@ -48,9 +48,25 @@ function LoginInner() {
         setBusy(false);
         return;
       }
-      if (!res.ok) {
-        // Show the error in both languages: we do not yet know which they read.
+
+      // Distinguish "wrong passcode" from "the server is broken". Collapsing
+      // every non-200 into "not recognized" sends people hunting for a typo
+      // when the real fault is a missing env var or an unreachable database —
+      // and gives whoever is debugging no signal at all.
+      if (res.status === 401) {
         setErr(`${en.login_error} / ${es.login_error}`);
+        setBusy(false);
+        return;
+      }
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const body = await res.json();
+          detail = body?.error ? ` (${body.error})` : '';
+        } catch {
+          // no JSON body — leave detail empty
+        }
+        setErr(`${en.login_generic_error} [${res.status}]${detail}`);
         setBusy(false);
         return;
       }

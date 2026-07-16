@@ -43,7 +43,23 @@ export async function POST(request) {
     return Response.json({ error: 'Missing passcode' }, { status: 400 });
   }
 
-  const user = await getUserByPasscode(passcode);
+  // Look the passcode up. A thrown error here is almost always environmental —
+  // POSTGRES_URL missing, the schema never run, the app pointed at a different
+  // branch than the one that was seeded. Catch it and say so, rather than
+  // letting it surface as a generic 500 that looks identical to a wrong
+  // passcode from the outside.
+  let user;
+  try {
+    user = await getUserByPasscode(passcode);
+  } catch (err) {
+    const msg = err?.message || String(err);
+    console.error('[login] passcode lookup failed:', msg);
+    return Response.json(
+      { error: `Database error: ${msg}` },
+      { status: 500 }
+    );
+  }
+
   if (!user) {
     // Deliberately vague: do not reveal whether the passcode exists but is
     // deactivated, versus never existed.
