@@ -22,6 +22,7 @@ function DashboardInner() {
 
   const [learner, setLearner] = useState('');
   const [lang, setLang] = useState('');
+  const [role, setRole] = useState('');
   const [progress, setProgress] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +40,7 @@ function DashboardInner() {
     }
     setLearner(id);
     setLang(l);
+    setRole(sessionStorage.getItem('gp_role') || '');
   }, [router, token]);
 
   const loadProgress = useCallback(async () => {
@@ -83,6 +85,14 @@ function DashboardInner() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={BRANDING.logo_path} alt={BRANDING.company_name} className="brand-logo" />
         <div className="dash-meta">
+          {(role === 'admin' || role === 'super_admin') && (
+            <Link
+              href={`/admin${token ? `?token=${encodeURIComponent(token)}` : ''}`}
+              className="btn-ghost"
+            >
+              {s.dash_admin} →
+            </Link>
+          )}
           <LanguageToggle
             learner={learner}
             token={token}

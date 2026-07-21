@@ -38,6 +38,7 @@ function WatchInner() {
 
   const [learner, setLearner] = useState('');
   const [lang, setLang] = useState('');
+  const [role, setRole] = useState('');
   const [ended, setEnded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [completedNow, setCompletedNow] = useState(false);
@@ -58,6 +59,7 @@ function WatchInner() {
     }
     setLearner(id);
     setLang(l);
+    setRole(sessionStorage.getItem('gp_role') || '');
   }, [router, token]);
 
   async function track(eventType) {
@@ -107,7 +109,12 @@ function WatchInner() {
       <header className="brand-header">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={BRANDING.logo_path} alt={BRANDING.company_name} className="brand-logo" />
-        <Link href={`/dashboard${q}`} className="btn-ghost">← {s.dash_back}</Link>
+        <div className="dash-meta">
+          {(role === 'admin' || role === 'super_admin') && (
+            <Link href={`/admin${q}`} className="btn-ghost">{s.dash_admin} →</Link>
+          )}
+          <Link href={`/dashboard${q}`} className="btn-ghost">← {s.dash_back}</Link>
+        </div>
       </header>
 
       <div className="player-head">
